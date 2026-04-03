@@ -10,20 +10,20 @@ Run `python grade.py ex1` to check for obvious issues before submitting.
 # The exact answer the model gave for each condition.
 # Copy-paste from your terminal output (the → "..." part).
 
-PART_A_PLAIN_ANSWER    = "FILL_ME_IN"
-PART_A_XML_ANSWER      = "FILL_ME_IN"
-PART_A_SANDWICH_ANSWER = "FILL_ME_IN"
+PART_A_PLAIN_ANSWER    = "The Haymarket Vaults"
+PART_A_XML_ANSWER      = "The Albanach"
+PART_A_SANDWICH_ANSWER = "The Albanach"
 
 # Was each answer correct? True or False.
 # Correct = contains "Haymarket" or "Albanach" (both satisfy all constraints).
 
-PART_A_PLAIN_CORRECT    = None   # True or False
-PART_A_XML_CORRECT      = None
-PART_A_SANDWICH_CORRECT = None
+PART_A_PLAIN_CORRECT    = True   # True or False
+PART_A_XML_CORRECT      = True
+PART_A_SANDWICH_CORRECT = True
 
 # Explain what you observed. Minimum 30 words.
 
-PART_A_EXPLANATION = """
+PART_A_EXPLANATION = "Quick result, all results are true. The Sandwich used considerably more tokens, 289. PLAIN the least tokens, 180. XML is closer to SANDWICH, 251 tokens"
 FILL ME IN
 """
 
