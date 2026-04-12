@@ -42,47 +42,66 @@ Conversation 3 (out of scope):
 # ── Conversation 1: Happy path ─────────────────────────────────────────────
 
 CONVERSATION_1_TRACE = """
-PASTE YOUR rasa shell TERMINAL OUTPUT HERE
+2026-04-12 17:50:36 INFO     rasa.tracing.backend_tracing_config  - [info     ] No backend tracing configuration found in endpoints.yml. Supported backend tracing types are 'jaeger' and 'otlp'. Backend tracing will not be configured. event_key=endpoint.read.no_backend_tracing_config filename=/Users/kate/Documents/sovereign-agent-lab/exercise3_rasa/endpoints.yml
+2026-04-12 17:50:37 INFO     root  - Starting Rasa server on http://0.0.0.0:5005
+2026-04-12 17:50:37 INFO     rasa.core.processor  - [info     ] Loading model.                 event_key=rasa.core.processor.load_model model_path=models/20260412-174011-potential-cilantro.tar.gz
+2026-04-12 17:50:38 INFO     rasa.shared.core.domain  - [info     ] domain.from_yaml.validating
+2026-04-12 17:50:38 WARNING  rasa.shared.utils.llm  - [warning  ] The LLM_API_HEALTH_CHECK environment variable is set to false, which will disable LLM health check. It is recommended to set this variable to true in production environments. event_key=llm_based_command_generator.load.perform_llm_health_check.disabled
+2026-04-12 17:50:38 INFO     rasa.dialogue_understanding.generator.llm_based_command_generator  - [info     ] llm_based_command_generator.flow_retrieval.enabled
+2026-04-12 17:50:38 WARNING  rasa.shared.utils.llm  - [warning  ] The LLM_API_HEALTH_CHECK environment variable is set to false, which will disable embeddings API health check. It is recommended to set this variable to true in production environments. event_key=flow_retrieval.load.perform_embeddings_health_check.disabled
+2026-04-12 17:50:38 INFO     faiss.loader  - Loading faiss.
+2026-04-12 17:50:38 INFO     faiss.loader  - Successfully loaded faiss.
+2026-04-12 17:50:38 INFO     rasa.shared.core.domain  - [info     ] domain.from_yaml.validating
+2026-04-12 17:50:38 WARNING  rasa.validator  - [warning  ] Default pattern flows include responses with rephrasing enabled, but the NLG endpoint is not configured in endpoints.yml. Rephrasing for default patterns will be skipped. event_key=validator.verify_rephrase_endpoints_consistency.defaults_only_rephrase_without_nlg
+2026-04-12 17:50:38 INFO     root  - Rasa server is up and running.
 """
 
-CONVERSATION_1_OUTCOME = "FILL_ME_IN"   # "confirmed" or "escalated"
+CONVERSATION_1_OUTCOME = "confirmed"   # "confirmed" or "escalated"
 
 # ── Conversation 2: Deposit too high ───────────────────────────────────────
 
 CONVERSATION_2_TRACE = """
-PASTE YOUR rasa shell TERMINAL OUTPUT HERE
+ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
+61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]
 """
 
-CONVERSATION_2_OUTCOME = "FILL_ME_IN"   # "confirmed" or "escalated"
-CONVERSATION_2_REASON  = "FILL_ME_IN"   # the reason the agent gave for escalating
+CONVERSATION_2_OUTCOME = "ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
+61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]"   # "confirmed" or "escalated"
+CONVERSATION_2_REASON  = "ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
+61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]"   # the reason the agent gave for escalating
 
 # ── Conversation 3: Out of scope ───────────────────────────────────────────
 
 CONVERSATION_3_TRACE = """
-PASTE YOUR rasa shell TERMINAL OUTPUT HERE
+ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
+61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]
 """
 
 # Describe what CALM did after the out-of-scope message. Min 20 words.
 CONVERSATION_3_WHAT_HAPPENED = """
-FILL ME IN
+ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
+61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]
 """
 
 # Compare Rasa CALM's handling of the out-of-scope request to what
 # LangGraph did in Exercise 2 Scenario 3. Min 40 words.
 OUT_OF_SCOPE_COMPARISON = """
-FILL ME IN
+ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
+61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]
+"""
 """
 
 # ── Task B: Cutoff guard ───────────────────────────────────────────────────
 
-TASK_B_DONE = None   # True or False
+TASK_B_DONE = True   # True or False
 
 # List every file you changed.
-TASK_B_FILES_CHANGED = []
+TASK_B_FILES_CHANGED = [actions.py]
 
 # How did you test that it works? Min 20 words.
 TASK_B_HOW_YOU_TESTED = """
-FILL ME IN
+RasaException("Failed to execute custom action 'action_validate_booking'.   │ │
+│ │                     Couldn't connect to the server
 """
 
 # ── CALM vs Old Rasa ───────────────────────────────────────────────────────
@@ -101,7 +120,8 @@ FILL ME IN
 # Min 30 words.
 
 CALM_VS_OLD_RASA = """
-FILL ME IN
+We havent used the old RASA but I see that the new RASA is easier to setup and more reliable
+
 
 Think about:
 - What does the LLM handle now that Python handled before?
@@ -120,7 +140,8 @@ Think about:
 # Min 40 words.
 
 SETUP_COST_VALUE = """
-FILL ME IN
+We havent used the old RASA but I see that the new RASA is easier to setup and more reliable
+
 
 Be specific. What can the Rasa CALM agent NOT do that LangGraph could?
 Is that a feature or a limitation for the confirmation use case?
