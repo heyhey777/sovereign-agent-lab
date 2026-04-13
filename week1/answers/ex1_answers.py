@@ -24,7 +24,7 @@ PART_A_SANDWICH_CORRECT = True
 # Explain what you observed. Minimum 30 words.
 
 PART_A_EXPLANATION = """
-Quick result, all results are correct. 
+Quick result, all results are correct, but they differed in token usage.
 The Sandwich used considerably more tokens, 289. PLAIN the least tokens, 180. 
 XML is closer to SANDWICH, 251 tokens
 """
@@ -53,7 +53,7 @@ It also satisfies the first two constraints, the capacily and the vegan catering
 
 # Did the exercise run Part C (small model)?
 # Check outputs/ex1_results.json → "part_c_was_run"
-PART_C_WAS_RUN = None   # True or False
+PART_C_WAS_RUN = True   # True or False
 
 PART_C_PLAIN_ANSWER    = "The Haymarket Vaults"
 PART_C_XML_ANSWER      = "The Haymarket Vaults"
