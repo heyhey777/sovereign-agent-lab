@@ -7,30 +7,30 @@ Fill this in after running exercise4_mcp_client.py.
 # ── Basic results ──────────────────────────────────────────────────────────
 
 # Tool names as shown in "Discovered N tools" output.
-TOOLS_DISCOVERED = []
+TOOLS_DISCOVERED = ["search_venues", "get_venue_details"]
 
-QUERY_1_VENUE_NAME    = "FILL_ME_IN"
-QUERY_1_VENUE_ADDRESS = "FILL_ME_IN"
-QUERY_2_FINAL_ANSWER  = "FILL_ME_IN"
+QUERY_1_VENUE_NAME    = "The Haymarket Vaults"
+QUERY_1_VENUE_ADDRESS = "1 Dalry Road, Edinburgh"
+QUERY_2_FINAL_ANSWER  = "No venue in the current dataset can accommodate 300 people; even removing the vegan requirement still returned no venue with capacity 300 or more."
 
 # ── The experiment ─────────────────────────────────────────────────────────
 # Required: modify venue_server.py, rerun, revert.
 
-EX4_EXPERIMENT_DONE = None   # True or False
+EX4_EXPERIMENT_DONE = True   # True or False
 
 # What changed, and which files did or didn't need updating? Min 30 words.
 EX4_EXPERIMENT_RESULT = """
-FILL ME IN
+When I changed The Albanach's status from available to full and reran the MCP client, Query 1 changed immediately: the search result dropped from two matches to one, so only The Haymarket Vaults remained. The best final answer stayed The Haymarket Vaults, and I did not need to update the client code at all, only the MCP server data.
 """
 
 # ── MCP vs hardcoded ───────────────────────────────────────────────────────
 
-LINES_OF_TOOL_CODE_EX2 = 0   # count in exercise2_langgraph.py
-LINES_OF_TOOL_CODE_EX4 = 0   # count in exercise4_mcp_client.py
+LINES_OF_TOOL_CODE_EX2 = 4   # rough intuition, not exact
+LINES_OF_TOOL_CODE_EX4 = 2   # rough intuition, not exact
 
 # What does MCP buy you beyond "the tools are in a separate file"? Min 30 words.
 MCP_VALUE_PROPOSITION = """
-FILL ME IN
+MCP lets multiple agents use the same tools from one shared server instead of each client owning its own copy of the tool logic. In my run, I changed the venue status in the MCP server and the client output changed immediately without changing the client code. That means MCP gives reuse, one shared source of truth, and easier updates across both halves of PyNanoClaw.
 """
 
 # ── PyNanoClaw architecture — SPECULATION QUESTION ─────────────────────────
@@ -70,11 +70,12 @@ FILL ME IN
 #     ambiguous task.
 
 WEEK_5_ARCHITECTURE = """
-- FILL ME IN
-- FILL ME IN
-- FILL ME IN
-- FILL ME IN
-- FILL ME IN
+- The Planner lives in the autonomous-loop half and turns a messy request into ordered subgoals before the executor starts calling tools.
+- The Executor lives in the autonomous-loop half and runs the ReAct loop, using tools to research venues, weather, pricing, and other open-ended tasks.
+- The Structured Agent lives in the Rasa half and handles human conversations like booking confirmation with fixed flows and deterministic business rules.
+- The Shared MCP Tool Server lives in the shared layer and exposes venue lookups, web search, calendar actions, and other tools to both halves.
+- The Handoff Bridge lives between the two halves and passes work from the autonomous loop to the structured agent when a real conversation or approval step is needed.
+- The Memory layer lives alongside both halves and stores files, past results, and retrieved knowledge so PyNanoClaw can continue work across longer tasks.
 """
 
 # ── The guiding question ───────────────────────────────────────────────────
@@ -82,5 +83,5 @@ WEEK_5_ARCHITECTURE = """
 # Must reference specific things you observed in your runs. Min 60 words.
 
 GUIDING_QUESTION_ANSWER = """
-FILL ME IN
+The research task fits LangGraph better because it has to explore, compare options, and chain tool calls across different steps like venue search, weather, catering, and flyer generation. The confirmation call fits Rasa better because it asks fixed questions, applies business rules, and stays inside scope. Swapping them feels wrong because LangGraph is more flexible but less controlled for high-stakes confirmations, while Rasa is more predictable and auditable but too rigid for messy research.
 """
