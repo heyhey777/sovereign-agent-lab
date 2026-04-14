@@ -42,18 +42,18 @@ Conversation 3 (out of scope):
 # ── Conversation 1: Happy path ─────────────────────────────────────────────
 
 CONVERSATION_1_TRACE = """
-2026-04-12 17:50:36 INFO     rasa.tracing.backend_tracing_config  - [info     ] No backend tracing configuration found in endpoints.yml. Supported backend tracing types are 'jaeger' and 'otlp'. Backend tracing will not be configured. event_key=endpoint.read.no_backend_tracing_config filename=/Users/kate/Documents/sovereign-agent-lab/exercise3_rasa/endpoints.yml
-2026-04-12 17:50:37 INFO     root  - Starting Rasa server on http://0.0.0.0:5005
-2026-04-12 17:50:37 INFO     rasa.core.processor  - [info     ] Loading model.                 event_key=rasa.core.processor.load_model model_path=models/20260412-174011-potential-cilantro.tar.gz
-2026-04-12 17:50:38 INFO     rasa.shared.core.domain  - [info     ] domain.from_yaml.validating
-2026-04-12 17:50:38 WARNING  rasa.shared.utils.llm  - [warning  ] The LLM_API_HEALTH_CHECK environment variable is set to false, which will disable LLM health check. It is recommended to set this variable to true in production environments. event_key=llm_based_command_generator.load.perform_llm_health_check.disabled
-2026-04-12 17:50:38 INFO     rasa.dialogue_understanding.generator.llm_based_command_generator  - [info     ] llm_based_command_generator.flow_retrieval.enabled
-2026-04-12 17:50:38 WARNING  rasa.shared.utils.llm  - [warning  ] The LLM_API_HEALTH_CHECK environment variable is set to false, which will disable embeddings API health check. It is recommended to set this variable to true in production environments. event_key=flow_retrieval.load.perform_embeddings_health_check.disabled
-2026-04-12 17:50:38 INFO     faiss.loader  - Loading faiss.
-2026-04-12 17:50:38 INFO     faiss.loader  - Successfully loaded faiss.
-2026-04-12 17:50:38 INFO     rasa.shared.core.domain  - [info     ] domain.from_yaml.validating
-2026-04-12 17:50:38 WARNING  rasa.validator  - [warning  ] Default pattern flows include responses with rephrasing enabled, but the NLG endpoint is not configured in endpoints.yml. Rephrasing for default patterns will be skipped. event_key=validator.verify_rephrase_endpoints_consistency.defaults_only_rephrase_without_nlg
-2026-04-12 17:50:38 INFO     root  - Rasa server is up and running.
+Your input -> calling to confirm a booking
+How many guests are you confirming for tonight's event?
+Your input -> 160 guests
+And how many of those guests will need vegan meals?
+Your input -> ~50 vegan
+Sorry, I am having trouble with that. Please try again in a few minutes.
+And how many of those guests will need vegan meals?
+Your input -> ~50 vegan
+What deposit amount in GBP are you proposing to secure the booking?
+Your input -> £200 deposit
+Thank you — booking confirmed. 160 guests, 50 requiring vegan meals, £200 deposit accepted. I'll send written confirmation to the organiser shortly.
+Is there anything else I can help you with?
 """
 
 CONVERSATION_1_OUTCOME = "confirmed"   # "confirmed" or "escalated"
@@ -61,34 +61,44 @@ CONVERSATION_1_OUTCOME = "confirmed"   # "confirmed" or "escalated"
 # ── Conversation 2: Deposit too high ───────────────────────────────────────
 
 CONVERSATION_2_TRACE = """
-ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
-61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]
+Your input -> calling to confirm a booking
+How many guests are you confirming for tonight's event?
+Your input -> 160 guests
+And how many of those guests will need vegan meals?
+Your input -> about 50 need vegan
+I'm sorry I am unable to understand you, could you please rephrase?
+And how many of those guests will need vegan meals?
+Your input -> about 50 need vegan
+What deposit amount in GBP are you proposing to secure the booking?
+Your input -> £7777
+I need to check one thing with the organiser before I can confirm. The issue is: a deposit of £7777 exceeds the organiser's authorised limit of £300. Can I call you back within 15 minutes?
+Is there anything else I can help you with?
 """
 
-CONVERSATION_2_OUTCOME = "ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
-61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]"   # "confirmed" or "escalated"
-CONVERSATION_2_REASON  = "ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
-61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]"   # the reason the agent gave for escalating
+CONVERSATION_2_OUTCOME = "escalated"   # "confirmed" or "escalated"
+CONVERSATION_2_REASON  = "a deposit of £7777 exceeds the organiser's authorised limit of £300"   # the reason the agent gave for escalating
 
 # ── Conversation 3: Out of scope ───────────────────────────────────────────
 
 CONVERSATION_3_TRACE = """
-ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
-61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]
+Your input -> calling to confirm a booking
+How many guests are you confirming for tonight's event?
+Your input -> 160 guests
+And how many of those guests will need vegan meals?
+Your input -> can you arrange a bouncy castle for the speakers?
+I can only help with confirming tonight's venue booking. For anything else, please contact the event organiser directly.
+Would you like to continue with confirm booking?
 """
 
 # Describe what CALM did after the out-of-scope message. Min 20 words.
 CONVERSATION_3_WHAT_HAPPENED = """
-ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
-61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]
+CALM did not try to answer the out-of-scope request itself. Instead, it stated that it could only help with confirming tonight's venue booking and redirected the user back to the booking flow.
 """
 
 # Compare Rasa CALM's handling of the out-of-scope request to what
 # LangGraph did in Exercise 2 Scenario 3. Min 40 words.
 OUT_OF_SCOPE_COMPARISON = """
-ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multiple exceptions: [Errno
-61] Connect call failed ('::1', 5055, 0, 0), [Errno 61] Connect call failed ('127.0.0.1', 5055)]
-"""
+In Exercise 2, the LangGraph agent either gave a vague generic reply or tried to reason more openly about what it could do. Here, CALM stayed tightly inside its defined scope, refused the unrelated bouncy-castle request, and redirected the conversation back to the booking flow. That makes CALM more predictable and safer for a structured confirmation task.
 """
 
 # ── Task B: Cutoff guard ───────────────────────────────────────────────────
@@ -96,12 +106,11 @@ ClientConnectorError: Cannot connect to host localhost:5055 ssl:default [Multipl
 TASK_B_DONE = True   # True or False
 
 # List every file you changed.
-TASK_B_FILES_CHANGED = [actions.py]
+TASK_B_FILES_CHANGED = ["exercise3_rasa/actions/actions.py"]
 
 # How did you test that it works? Min 20 words.
 TASK_B_HOW_YOU_TESTED = """
-RasaException("Failed to execute custom action 'action_validate_booking'.   │ │
-│ │                     Couldn't connect to the server
+I uncommented the cutoff guard in actions.py, restarted the action server, and ran a booking conversation after 16:45 with 160 guests, about 50 vegan, and a £200 deposit. The agent escalated immediately because it was too late to process the confirmation before the 5 PM deadline.
 """
 
 # ── CALM vs Old Rasa ───────────────────────────────────────────────────────
